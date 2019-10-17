@@ -24,6 +24,17 @@ For solving this problem and train our algorithms, we are using data from [Monan
 
 ## Solution proposal
 
+Our method for fake news detection (or detection of unreliable news articles) is based on using two types of features:
+1. textual attributes of article (such as body and title)
+1. contextual features (discussions related to articles, images, etc)
+
+For processing the textual attributes, we will use LSTM layer. We have chosen LSTM because of its two major advantages - handling arbitrary length of input and dealing with long-term dependencies. Both of them are useful when dealing with articles or longer documents.
+ 
+The architecture is shown on the image below, however does not include details such as number of neurons in each layer, activation functions or length of input. All of those parameters can be tuned later to achieve best results. We can say that also the architecture or number of dense layers can change in the future depending on the data.
+
+Because it is not clear which of the contextual information we are going to use (it depends on the exploratory analysis), it is illustrated only with blue rectangle for now. Depending on the type of contextual data, this rectangle may be replaced with feature engineering, or another LSTM or even convolutional layers.
+
+![Proposal](images/nn_proposal.png)
 
 
 ## References
