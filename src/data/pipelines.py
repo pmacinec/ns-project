@@ -1,7 +1,6 @@
 from langdetect import detect
 import re
 from sklearn.base import TransformerMixin
-from nltk.tokenize import word_tokenize
 
 
 class ColumnsFilter(TransformerMixin):
@@ -71,7 +70,7 @@ class ArticlesLanguageFilter(TransformerMixin):
         df_copy['lang'] = df_copy[self.column].apply(lambda text: detect(text))
         df_copy = df_copy[df_copy.lang == self.language]
 
-        df_copy.drop(['lang'], axis=1)
+        df_copy.drop(['lang'], axis=1, inplace=True)
 
         return df_copy
 
@@ -97,14 +96,14 @@ class ArticlesSizeFilter(TransformerMixin):
         df_copy = df.copy()
 
         df_copy['num_words'] = df_copy[self.column].apply(
-            lambda x: len(word_tokenize(x))
+            lambda text: len(text.split())
         )
         df_copy = df_copy[
             (df_copy['num_words'] >= self.lower_boundary) &
             (df_copy['num_words'] <= self.upper_boundary)
         ]
 
-        df_copy = df_copy.drop(['num_words'], axis=1)
+        df_copy.drop(['num_words'], axis=1, inplace=True)
 
         return df_copy
 
