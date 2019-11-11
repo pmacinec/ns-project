@@ -1,5 +1,6 @@
 from langdetect import detect
 import re
+import time
 from sklearn.base import TransformerMixin
 
 
@@ -19,6 +20,10 @@ class ColumnsFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
+        
+        print('ColumnsFilter transformation started.')
+        start_time = time.time()
+
         if self.columns is not None:
             columns = self.columns
         elif self.all_except is not None and len(self.all_except):
@@ -27,6 +32,11 @@ class ColumnsFilter(TransformerMixin):
             return df
 
         df = df.drop(columns, axis=1)
+
+        end_time = time.time()
+        print(f'ColumnsFilter transformation ended, '
+              f'tooks {end_time - start_time} seconds.')
+
         return df
 
 
@@ -45,7 +55,16 @@ class NanFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
+
+        print('NanFilter transformation started.')
+        start_time = time.time()
+
         df = df.dropna(subset=self.columns)
+
+        end_time = time.time()
+        print(f'NanFilter transformation ended, tooks '
+              f'{end_time - start_time} seconds.')
+
         return df
 
 
@@ -65,12 +84,22 @@ class ArticlesLanguageFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
+
+        print('ArticlesLanguageFilter transformation started.')
+        start_time = time.time()
+
         df_copy = df.copy()
 
-        df_copy['lang'] = df_copy[self.column].apply(lambda text: detect(text))
+        df_copy['lang'] = df_copy[self.column].apply(
+            lambda text: detect(text)
+        )
         df_copy = df_copy[df_copy.lang == self.language]
 
         df_copy.drop(['lang'], axis=1, inplace=True)
+
+        end_time = time.time()
+        print(f'ArticlesLanguageFilter transformation ended, tooks '
+              f'{end_time - start_time} seconds.')
 
         return df_copy
 
@@ -93,6 +122,10 @@ class ArticlesSizeFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
+
+        print('ArticlesSizeFilter transformation started.')
+        start_time = time.time()
+
         df_copy = df.copy()
 
         df_copy['num_words'] = df_copy[self.column].apply(
@@ -104,6 +137,10 @@ class ArticlesSizeFilter(TransformerMixin):
         ]
 
         df_copy.drop(['num_words'], axis=1, inplace=True)
+
+        end_time = time.time()
+        print(f'ArticlesSizeFilter transformation ended, tooks '
+              f'{end_time - start_time} seconds.')
 
         return df_copy
 
@@ -127,6 +164,10 @@ class TextPreprocessor(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
+
+        print('TextPreprocessor transformation started.')
+        start_time = time.time()
+
         df_copy = df.copy()
 
         # Lowercase text.
@@ -142,5 +183,9 @@ class TextPreprocessor(TransformerMixin):
         df_copy[self.column] = df_copy[self.column].apply(
             lambda text: re.sub(r'[^a-zA-Z0-9\.,?!]+', ' ', text)
         )
+
+        end_time = time.time()
+        print(f'TextPreprocessor transformation ended, tooks '
+              f'{end_time - start_time} seconds.')
 
         return df_copy
