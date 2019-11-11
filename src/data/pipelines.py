@@ -189,3 +189,32 @@ class TextPreprocessor(TransformerMixin):
               f'{end_time - start_time} seconds.')
 
         return df_copy
+
+
+class DuplicatesFilter(TransformerMixin):
+    """
+    Filter to remove duplicate articles.
+
+    :param column: str, name of column to check duplicates in.
+    """
+
+    def __init__(self, column):
+        self.column = column
+
+    def fit(self, df, y=None, **fit_params):
+        return self
+
+    def transform(self, df, **transform_params):
+
+        print('DuplicatesFilter transformation started.')
+        start_time = time.time()
+
+        df_copy = df.copy()
+
+        df_copy.drop_duplicates(subset=[self.column], inplace=True)
+
+        end_time = time.time()
+        print(f'DuplicatesFilter transformation ended, tooks '
+              f'{end_time - start_time} seconds.')
+
+        return df_copy
