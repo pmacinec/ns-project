@@ -6,11 +6,10 @@ preprocessing_pipeline = Pipeline(
     [
         ('cols_filter', ppl.ColumnsFilter(all_except=['body', 'label'])),
         ('nan_filter', ppl.NanFilter(['body'])),
-        ('size_filter', ppl.ArticlesSizeFilter('body', 100, 15000)),
         ('lang_filter', ppl.ArticlesLanguageFilter('body', 'en')),
-        ('text_preprocess', ppl.TextPreprocessor('body'))
-    ],
-    verbose=True
+        ('text_preprocess', ppl.TextPreprocessor('body')),
+        ('size_filter', ppl.ArticlesSizeFilter('body', 100, 6000)),
+    ]
 )
 
 
