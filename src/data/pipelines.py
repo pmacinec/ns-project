@@ -2,6 +2,7 @@ from langdetect import detect
 import re
 import time
 from sklearn.base import TransformerMixin
+from nltk.tokenize import sent_tokenize
 
 
 class ColumnsFilter(TransformerMixin):
@@ -20,7 +21,7 @@ class ColumnsFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
-        
+
         print('ColumnsFilter transformation started.')
         start_time = time.time()
 
@@ -35,17 +36,19 @@ class ColumnsFilter(TransformerMixin):
 
         end_time = time.time()
         print(f'ColumnsFilter transformation ended, '
-              f'tooks {end_time - start_time} seconds.')
+              f'took {end_time - start_time} seconds.')
 
         return df
 
 
-class NanFilter(TransformerMixin):
+class EmptyValuesFilter(TransformerMixin):
     """
-    Filter NaN values in dataset of selected columns.
+    Filter empty values in dataset of selected columns.
 
-    :param columns: list, subset of columns to drop samples with NaN
-        value in.
+    Empty values can be NaN or empty strings.
+
+    :param columns: list, subset of columns to drop samples with empty
+        values in.
     """
 
     def __init__(self, columns):
@@ -55,14 +58,16 @@ class NanFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
-
         print('NanFilter transformation started.')
         start_time = time.time()
 
         df = df.dropna(subset=self.columns)
 
+        for column in self.columns:
+            df = df[df[column] != '']
+
         end_time = time.time()
-        print(f'NanFilter transformation ended, tooks '
+        print(f'NanFilter transformation ended, took '
               f'{end_time - start_time} seconds.')
 
         return df
@@ -84,7 +89,6 @@ class ArticlesLanguageFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
-
         print('ArticlesLanguageFilter transformation started.')
         start_time = time.time()
 
@@ -98,7 +102,7 @@ class ArticlesLanguageFilter(TransformerMixin):
         df_copy.drop(['lang'], axis=1, inplace=True)
 
         end_time = time.time()
-        print(f'ArticlesLanguageFilter transformation ended, tooks '
+        print(f'ArticlesLanguageFilter transformation ended, took '
               f'{end_time - start_time} seconds.')
 
         return df_copy
@@ -108,9 +112,12 @@ class ArticlesSizeFilter(TransformerMixin):
     """
     Filter to remove all articles that are too short or too long.
 
+    Both attributes, upper and lower boundaries are not included
+    in interval.
+
     :param column: str, name of column to check the size of article.
-    :param upper_boundary: int, maximum words in article.
     :param lower_boundary: int, minimum words in article.
+    :param upper_boundary: int, maximum words in article.
     """
 
     def __init__(self, column, lower_boundary, upper_boundary):
@@ -122,7 +129,6 @@ class ArticlesSizeFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
-
         print('ArticlesSizeFilter transformation started.')
         start_time = time.time()
 
@@ -132,14 +138,14 @@ class ArticlesSizeFilter(TransformerMixin):
             lambda text: len(text.split())
         )
         df_copy = df_copy[
-            (df_copy['num_words'] >= self.lower_boundary) &
-            (df_copy['num_words'] <= self.upper_boundary)
-        ]
+            (df_copy['num_words'] > self.lower_boundary) &
+            (df_copy['num_words'] < self.upper_boundary)
+            ]
 
         df_copy.drop(['num_words'], axis=1, inplace=True)
 
         end_time = time.time()
-        print(f'ArticlesSizeFilter transformation ended, tooks '
+        print(f'ArticlesSizeFilter transformation ended, took '
               f'{end_time - start_time} seconds.')
 
         return df_copy
@@ -164,7 +170,6 @@ class TextPreprocessor(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
-
         print('TextPreprocessor transformation started.')
         start_time = time.time()
 
@@ -183,9 +188,17 @@ class TextPreprocessor(TransformerMixin):
         df_copy[self.column] = df_copy[self.column].apply(
             lambda text: re.sub(r'[^a-zA-Z0-9\.,?!]+', ' ', text)
         )
+        # Remove urls
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r'(www|http:|https:)+[^\s]+[\w]', '', text)
+        )
+        # Remove xml specific strings
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r'<!--//<!\[CDATA\[[^\]]*\]\]>-->', '', text)
+        )
 
         end_time = time.time()
-        print(f'TextPreprocessor transformation ended, tooks '
+        print(f'TextPreprocessor transformation ended, took '
               f'{end_time - start_time} seconds.')
 
         return df_copy
@@ -205,7 +218,6 @@ class DuplicatesFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
-
         print('DuplicatesFilter transformation started.')
         start_time = time.time()
 
@@ -214,7 +226,7 @@ class DuplicatesFilter(TransformerMixin):
         df_copy.drop_duplicates(subset=[self.column], inplace=True)
 
         end_time = time.time()
-        print(f'DuplicatesFilter transformation ended, tooks '
+        print(f'DuplicatesFilter transformation ended, took '
               f'{end_time - start_time} seconds.')
 
         return df_copy
