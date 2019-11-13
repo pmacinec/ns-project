@@ -58,7 +58,7 @@ class EmptyValuesFilter(TransformerMixin):
         return self
 
     def transform(self, df, **transform_params):
-        print('NanFilter transformation started.')
+        print('EmptyValuesFilter transformation started.')
         start_time = time.time()
 
         df = df.dropna(subset=self.columns)
@@ -67,7 +67,7 @@ class EmptyValuesFilter(TransformerMixin):
             df = df[df[column] != '']
 
         end_time = time.time()
-        print(f'NanFilter transformation ended, took '
+        print(f'EmptyValuesFilter transformation ended, took '
               f'{end_time - start_time} seconds.')
 
         return df
