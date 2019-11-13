@@ -151,6 +151,64 @@ class ArticlesSizeFilter(TransformerMixin):
         return df_copy
 
 
+class ArticlesSentenceLengthFilter(TransformerMixin):
+    """
+    Filter all articles that have extreme values in sentences length.
+
+    Both attributes, upper and lower boundaries are not included
+    in interval.
+
+    :param column: str, name of column to check the average sentence
+        length of article.
+    :param lower_boundary: int, minimum average sentence length.
+    :param upper_boundary: int, maximum average sentence length.
+    """
+
+    def __init__(self, column, lower_boundary, upper_boundary):
+        self.column = column
+        self.lower_boundary = lower_boundary
+        self.upper_boundary = upper_boundary
+
+    def fit(self, df, y=None, **fit_params):
+        return self
+
+    def get_avg_sentence_length(self, text, num_words):
+        result = re.sub(r'\w\n', '. ', text)
+        result = re.sub(r'\.{2,}', '. ', result)
+        result = re.sub(r'\.', '. ', result)
+
+        return num_words / len(sent_tokenize(result))
+
+    def transform(self, df, **transform_params):
+        print('ArticlesSentenceLengthFilter transformation started.')
+        start_time = time.time()
+
+        df_copy = df.copy()
+
+        df_copy['num_words'] = df_copy[self.column].apply(
+            lambda text: len(text.split())
+        )
+        df_copy['avg_sent_length'] = df_copy.apply(
+            lambda sample: self.get_avg_sentence_length(
+                sample[self.column],
+                sample['num_words']
+            ),
+            axis=1
+        )
+        df_copy = df_copy[
+            (df_copy['avg_sent_length'] > self.lower_boundary) &
+            (df_copy['avg_sent_length'] < self.upper_boundary)
+            ]
+
+        df_copy.drop(['avg_sent_length', 'num_words'], axis=1, inplace=True)
+
+        end_time = time.time()
+        print(f'ArticlesSentenceLengthFilter transformation ended, took '
+              f'{end_time - start_time} seconds.')
+
+        return df_copy
+
+
 class TextPreprocessor(TransformerMixin):
     """
     Transformer to clean text attribute.
