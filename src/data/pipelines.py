@@ -10,7 +10,7 @@ class ColumnsFilter(TransformerMixin):
     Transformer to drop columns of the dataframe.
 
     :param columns: list, list of columns to drop.
-    :param except_columns: list, list of columns to preserve.
+    :param all_except: list, list of columns to preserve.
     """
 
     def __init__(self, columns=None, all_except=None):
