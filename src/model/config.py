@@ -27,8 +27,6 @@ def parse_input_parameters():
 
     parser.add_argument("-f", "--file", dest="config_file",
                         help="Path to config file.")
-    parser.add_argument("-v", "--verbose", dest="verbose", default=True,
-                        help="Don't print-out information during training.")
     parser.add_argument("-bs", "--batch_size", dest="batch_size",
                         help="Batch size to be used in training.")
     parser.add_argument("-lr", "--learning_rate", dest="learning_rate",
