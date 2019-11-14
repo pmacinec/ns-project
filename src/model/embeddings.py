@@ -20,7 +20,17 @@ def get_sequences_and_word_index_table(texts, max_words=None):
     # Pad sequences
     sequences = pad_sequences(sequences)
 
-    return sequences, tokenizer.word_index
+    word_index = tokenizer.word_index
+    if max_words is not None:
+        # This step is done due to issue on keras Tokenizer:
+        # https://github.com/keras-team/keras/issues/8092
+        word_index = {
+            word: idx for word, idx
+            in tokenizer.word_index.items()
+            if idx <= max_words
+        }
+
+    return sequences, word_index
 
 
 def get_embeddings_matrix(word_index, pretrained_embeddings, embeddings_dim):
@@ -35,7 +45,7 @@ def get_embeddings_matrix(word_index, pretrained_embeddings, embeddings_dim):
     """
     # Words that does not exist in word index table,
     # will have vectors containing only zeros
-    embeddings_matrix = np.zeros((len(word_index) + 1), embeddings_dim)
+    embeddings_matrix = np.zeros((len(word_index) + 1, embeddings_dim))
     
     for word, i in word_index.items():
         vector = pretrained_embeddings.get(word)
