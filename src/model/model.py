@@ -1,25 +1,34 @@
 import tensorflow.keras as keras
-from tensorflow.keras import layers
-from tensorflow.keras.initializers import Constant
 
 
 class FakeNewsDetectionNet(keras.Model):
+    """
+    Neural network model for fake news detection.
+
+    :param dim_input: int, input dimension.
+    :param dim_embeddings: int, embeddings dimension
+        (e.g. 300 for fasttext).
+    :param dim_output: int, output dimension
+        (e.g. 2 for binary classification).
+    :param embeddings: numpy.array, embeddings matrix of dimension
+        (dim_input x dim_embeddings).
+    """
 
     def __init__(self, dim_input, dim_embeddings, dim_output, embeddings):
         super(FakeNewsDetectionNet, self).__init__()
         self.model_layers = [
-            layers.Embedding(
+            keras.layers.Embedding(
                 input_dim=dim_input,
                 output_dim=dim_embeddings,
-                embeddings_initializer=Constant(embeddings),
+                embeddings_initializer=keras.initializers.Constant(embeddings),
                 trainable=False
             ),
-            layers.LSTM(128),
-            layers.Dense(
+            keras.layers.LSTM(128),
+            keras.layers.Dense(
                 units=128,
                 activation='relu'
             ),
-            layers.Dense(
+            keras.layers.Dense(
                 units=dim_output,
                 activation='softmax'
             )
