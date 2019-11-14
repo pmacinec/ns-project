@@ -2,7 +2,7 @@ import numpy as np
 import os
 
 
-def read_fastext_model(path):
+def read_fasttext_model(path):
     """
     Read fastText model from .vec file.
 
