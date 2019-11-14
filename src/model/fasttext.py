@@ -2,12 +2,12 @@ import numpy as np
 import os
 
 
-def read_fasttext_model(path):
+def read_fastext_model(path):
     """
-    Read fasttext model from .vec file.
+    Read fastText model from .vec file.
 
     :param path: str, path to model in .vec format.
-    :return: dict, fasttext pre-trained word embedddings.
+    :return: dict, fastText pre-trained word embeddings.
     """
     if not os.path.isfile(path):
         return None
