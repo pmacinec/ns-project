@@ -10,14 +10,13 @@ from fasttext import read_fasttext_model
 import tensorflow.keras as keras
 
 
-def get_model(dim_input, dim_embeddings, dim_output, embeddings, optimizer):
+def get_model(dim_input, dim_embeddings, embeddings, optimizer):
     """
     Function to get compiled model, ready for training.
 
     :param dim_input: int, input dimension (vocabulary size).
     :param dim_embeddings: int, dimension of embeddings (e.g. 300 for
         pre-trained fastText embeddings).
-    :param dim_output: int, output dimension (2 in our case).
     :param embeddings: np.ndarray, matrix of pre-trained embeddings.
     :param optimizer: str|keras.optimizers.Optimizer, optimizer to be
         used in training.
@@ -26,7 +25,6 @@ def get_model(dim_input, dim_embeddings, dim_output, embeddings, optimizer):
     model = FakeNewsDetectionNet(
         dim_input=dim_input,
         dim_embeddings=dim_embeddings,
-        dim_output=dim_output,
         embeddings=embeddings
     )
 
@@ -113,7 +111,7 @@ def train(config):
 
     optimizer = keras.optimizers.RMSprop(learning_rate=config['learning_rate'])
 
-    model = get_model(len(word_index), 300, 2, embeddings_matrix, optimizer)
+    model = get_model(len(word_index), 300, embeddings_matrix, optimizer)
 
     model.fit(
         x=x_train,
