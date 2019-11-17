@@ -1,6 +1,46 @@
 import numpy as np
+import pandas as pd
+from os.path import dirname, join
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+from sklearn.model_selection import train_test_split
+
+
+def read_data(path=None, sample=None):
+    """
+    Read the data from specified csv file.
+
+    :param path: str, path to data csv file.
+    :param sample: int, number of samples to choose, None for all.
+    :return: pd.DataFrame, dataframe with data.
+    """
+    if path is None:
+        path = join(dirname(__file__), '../data/preprocessed/dataset.csv')
+
+    df = pd.read_csv(path, index_col=0)
+
+    # Categorical encoding of labels
+    df['label'] = df['label'].apply(
+        lambda label: 1 if label == 'unreliable' else 0
+    )
+
+    if sample is not None:
+        df = df.sample(sample)
+
+    return df
+
+
+def split_data(x, y, test_size=0.15):
+    """
+    Split data to train and test parts.
+
+    :param x: list, list of train data.
+    :param y: list, list of labels.
+    :param test_size: float, rate of test size.
+    :return: list, list of lists in format:
+        x_train, x_test, y_train, y_test.
+    """
+    return train_test_split(x, y, test_size=test_size, random_state=1)
 
 
 def get_sequences_and_word_index_table(texts, max_words=None):
