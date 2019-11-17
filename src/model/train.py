@@ -1,8 +1,134 @@
+import os
+from os.path import dirname, join
+import datetime
+import numpy as np
 from config import parse_input_parameters, get_config
+from model import FakeNewsDetectionNet
+from preprocessing import read_data, get_sequences_and_word_index_table, \
+    split_data, get_embeddings_matrix
+from fasttext import read_fasttext_model
+import tensorflow.keras as keras
+
+
+def get_model(dim_input, dim_embeddings, dim_output, embeddings, optimizer):
+    """
+    Function to get compiled model, ready for training.
+
+    :param dim_input: int, input dimension (vocabulary size).
+    :param dim_embeddings: int, dimension of embeddings (e.g. 300 for
+        pre-trained fastText embeddings).
+    :param dim_output: int, output dimension (2 in our case).
+    :param embeddings: np.ndarray, matrix of pre-trained embeddings.
+    :param optimizer: str|keras.optimizers.Optimizer, optimizer to be
+        used in training.
+    :return: FakeNewsDetectionNet, compiled Keras model.
+    """
+    model = FakeNewsDetectionNet(
+        dim_input=dim_input,
+        dim_embeddings=dim_embeddings,
+        dim_output=dim_output,
+        embeddings=embeddings
+    )
+
+    model.compile(
+        optimizer=optimizer,
+        loss='binary_crossentropy',
+        metrics=['accuracy']
+    )
+
+    return model
+
+
+def prepare_data(data_path=None, max_words=None, test_size=0.15):
+    """
+    Function to load and prepare data for training.
+
+    :param data_path: str, path where csv file is stored.
+    :param max_words: int, maximum number of top words in vocabulary.
+    :param test_size: float, train test split rate.
+    :return: list, list of data and word index in format:
+        x_train, x_test, y_train, y_test, word_index
+    """
+    data = read_data(data_path)
+
+    labels = np.asarray(data['label'])
+    sequences, word_index = get_sequences_and_word_index_table(
+        data['body'], max_words
+    )
+
+    print(f'Count of unique tokens: {len(word_index)}')
+    print(f'Sequences shape: {sequences.shape}')
+
+    x_train, x_test, y_train, y_test = split_data(sequences, labels, test_size)
+
+    return x_train, x_test, y_train, y_test, word_index
+
+
+def get_callbacks(logs_dir='logs', logs_name=None):
+    """
+    Function to get callbacks for training.
+
+    :param logs_dir: str, directory where logs should be generated.
+    :param logs_name: name of current logs.
+    :return: list, list of callbacks.
+    """
+    if logs_name is None:
+        logs_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    return [
+        keras.callbacks.TensorBoard(
+            log_dir=os.path.join(logs_dir, logs_name),
+            histogram_freq=1,
+            profile_batch=0
+        )
+    ]
 
 
 def train(config):
-    pass
+    """
+    Function to train prepared model on chosen data.
+
+    :param config: dict, configuration to be used.
+    :return: FakeNewsDetectionNet, trained model.
+    """
+    # Read the data and get word index
+    x_train, x_test, y_train, y_test, word_index = prepare_data(
+        data_path=config['data_file'],
+        max_words=config['max_words'],
+        test_size=config['test_size']
+    )
+
+    # Read pre-trained fasttext embeddings
+    fasttext = read_fasttext_model(
+        join(dirname(__file__), '../../models/fasttext/wiki-news-300d-1M.vec')
+    )
+
+    # Get filtered embeddings matrix
+    embeddings_matrix = get_embeddings_matrix(
+        word_index,
+        fasttext,
+        300
+    )
+    del fasttext
+
+    optimizer = keras.optimizers.RMSprop(learning_rate=config['learning_rate'])
+
+    model = get_model(len(word_index), 300, 2, embeddings_matrix, optimizer)
+
+    model.fit(
+        x=x_train,
+        y=y_train,
+        batch_size=config['batch_size'],
+        validation_data=(x_test, y_test),
+        callbacks=get_callbacks(logs_dir=config['logs_folder']),
+        epochs=config['epochs']
+    )
+
+    model.summary()
+
+    # TODO add storing model to models folder.
+
+    return model
 
 
 if __name__ == "__main__":
