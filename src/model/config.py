@@ -8,9 +8,13 @@ from argparse import ArgumentParser
 
 # TODO add steps how to create config file into README
 
-
-# TODO add docstrings
 def load_config(path=None):
+    """
+    Load config from specified JSON file.
+
+    :param path: str, path to config file (json format).
+    :return: dict, config dictionary.
+    """
     config_path = f'{dirname(__file__)}/config.json' if path is None else path
 
     if not isfile(config_path):
@@ -21,8 +25,12 @@ def load_config(path=None):
         return json.load(config)
 
 
-# TODO add docstrings
 def parse_input_parameters():
+    """
+    Parse script call arguments.
+
+    :return: argparse.Namespace, arguments namespace object.
+    """
     parser = ArgumentParser()
 
     parser.add_argument("-f", "--file", dest="config_file",
@@ -35,29 +43,46 @@ def parse_input_parameters():
                         help="Number of hidden layers.")
     parser.add_argument("-l", "--logs", dest="logs_folder",
                         help="Path to logs folder")
+    parser.add_argument("-e", "--epochs", dest="epochs",
+                        help="Number of epochs to train.")
+    parser.add_argument("-w", "--max_words", dest="max_words",
+                        help="Maximum words in vocabulary to use.")
+    parser.add_argument("-s", "--samples", dest="num_samples", default=None,
+                        help="Number of samples from data.")
+    parser.add_argument("-d", "--data", dest="data_file",
+                        help="Path to data csv file.")
+    parser.add_argument("-t", "--test_size", dest="test_size",
+                        help="Train test split rate (test size).")
 
     return parser.parse_args()
 
 
-# TODO add docstrings
 def load_custom_configs(config, args):
-    if args.batch_size is not None:
-        config['batch_size'] = args.batch_size
+    """
+    Overwrite default configs with script call arguments.
 
-    if args.learning_rate is not None:
-        config['learning_rate'] = args.learning_rate
+    :param config: dict, dictionary of config.
+    :param args: argparse.Namespace, object of script call arguments.
+    :return: dict, updated config.
+    """
+    args_names = ['batch_size', 'learning_rate', 'num_hidden_layers',
+                  'logs_folder', 'epochs', 'max_words', 'num_samples',
+                  'data_file', 'test_size']
 
-    if args.num_hidden_layers is not None:
-        config['num_hidden_layers'] = args.num_hidden_layers
-
-    if args.logs_folder is not None:
-        config['logs_folder'] = args.logs_folder
+    for arg in args_names:
+        if getattr(args, arg) is not None:
+            config[arg] = getattr(args, arg)
 
     return config
 
 
-# TODO add docstrings
 def get_config(args):
+    """
+    Get config from file and script call arguments.
+
+    :param args: argparse.Namespace, script call arguments object.
+    :return: dict, config from file and script call arguments.
+    """
     # Read default config file
     config = load_config()
 
