@@ -4,5 +4,6 @@
   "num_hidden_layers": 4,
   "epochs": 5,
   "logs_folder": "logs",
-  "max_words": 30000
+  "max_words": 30000,
+  "max_seq_len": 1000
 }

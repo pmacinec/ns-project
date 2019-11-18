@@ -53,6 +53,8 @@ def parse_input_parameters():
                         help="Path to data csv file.")
     parser.add_argument("-t", "--test_size", dest="test_size",
                         help="Train test split rate (test size).")
+    parser.add_argument("-sl", "--max_sequence_len", dest="max_seq_len",
+                        help="Maximum length of all sequences.")
 
     return parser.parse_args()
 
@@ -67,7 +69,7 @@ def load_custom_configs(config, args):
     """
     args_names = ['batch_size', 'learning_rate', 'num_hidden_layers',
                   'logs_folder', 'epochs', 'max_words', 'num_samples',
-                  'data_file', 'test_size']
+                  'data_file', 'test_size', 'max_seq_len']
 
     for arg in args_names:
         if getattr(args, arg) is not None:
