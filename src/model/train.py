@@ -41,7 +41,8 @@ def prepare_data(
         data_path=None,
         max_words=None,
         test_size=0.15,
-        max_seq_len=None
+        max_seq_len=None,
+        samples=None
 ):
     """
     Function to load and prepare data for training.
@@ -50,10 +51,11 @@ def prepare_data(
     :param max_words: int, maximum number of top words in vocabulary.
     :param test_size: float, train test split rate.
     :param max_seq_len: int, maximum length of all sequences.
+    :param samples: int, number of samples from data to choose.
     :return: list, list of data and word index in format:
         x_train, x_test, y_train, y_test, word_index
     """
-    data = read_data(data_path)
+    data = read_data(data_path, samples)
 
     labels = np.asarray(data['label'])
     sequences, word_index = get_sequences_and_word_index(
@@ -96,18 +98,23 @@ def train(config):
     :return: FakeNewsDetectionNet, trained model.
     """
     # Read the data and get word index
+    print('Preparing data...')
     x_train, x_test, y_train, y_test, word_index = prepare_data(
-        data_path=config['data_file'],
-        max_words=config['max_words'],
-        test_size=config['test_size'],
-        max_seq_len=config['max_seq_len']
+        data_path=config.get('data_file', None),
+        max_words=config.get('max_words', None),
+        test_size=config.get('test_size', None),
+        max_seq_len=config.get('max_seq_len', None),
+        samples=config.get('num_samples', None)
     )
+    print(f'Data prepared. Vocabulary size: {len(word_index)}.')
 
+    print('Reading fastText model...')
     # Read pre-trained fasttext embeddings
     fasttext = read_fasttext_model(
         join(dirname(__file__), '../../models/fasttext/wiki-news-300d-1M.vec')
     )
 
+    print('Creating embeddings matrix...')
     # Get filtered embeddings matrix
     embeddings_matrix = get_embeddings_matrix(
         word_index,
@@ -120,6 +127,8 @@ def train(config):
 
     model = get_model(len(word_index), 300, embeddings_matrix, optimizer)
 
+
+    print('Training the model...')
     model.fit(
         x=x_train,
         y=y_train,
@@ -142,6 +151,5 @@ if __name__ == "__main__":
     config = get_config(args)
     print(f'Config for this training: {config}')
 
-    print('Training model:')
     train(config)
     print('Model training ended.')

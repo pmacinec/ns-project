@@ -6,16 +6,16 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 
 
-def read_data(path=None, sample=None):
+def read_data(path=None, samples=None):
     """
     Read the data from specified csv file.
 
     :param path: str, path to data csv file.
-    :param sample: int, number of samples to choose, None for all.
+    :param samples: int, number of samples to choose, None for all.
     :return: pd.DataFrame, dataframe with data.
     """
     if path is None:
-        path = join(dirname(__file__), '../data/preprocessed/dataset.csv')
+        path = join(dirname(__file__), '../../data/preprocessed/dataset.csv')
 
     df = pd.read_csv(path, index_col=0)
 
@@ -24,8 +24,8 @@ def read_data(path=None, sample=None):
         lambda label: 1 if label == 'unreliable' else 0
     )
 
-    if sample is not None:
-        df = df.sample(sample)
+    if samples is not None:
+        df = df.sample(int(samples))
 
     return df
 
