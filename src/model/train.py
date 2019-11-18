@@ -1,4 +1,5 @@
 import os
+import gc
 from os.path import dirname, join
 import datetime
 import numpy as np
@@ -121,11 +122,16 @@ def train(config):
         fasttext,
         300
     )
+
+    vocabulary_size = len(word_index)
+
     del fasttext
+    del word_index
+    gc.collect()
 
     optimizer = keras.optimizers.RMSprop(learning_rate=config['learning_rate'])
 
-    model = get_model(len(word_index), 300, embeddings_matrix, optimizer)
+    model = get_model(vocabulary_size, 300, embeddings_matrix, optimizer)
 
 
     print('Training the model...')
