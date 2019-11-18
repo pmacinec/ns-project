@@ -43,12 +43,14 @@ def split_data(x, y, test_size=0.15):
     return train_test_split(x, y, test_size=test_size, random_state=1)
 
 
-def get_sequences_and_word_index_table(texts, max_words=None):
+def get_sequences_and_word_index(texts, max_words=None, max_seq_len=None):
     """
     Get sequences and word index table from texts.
 
     :param texts: list, array of texts (strings).
-    :param max_words: maximum number of words to preserver (top words).
+    :param max_words: int, maximum number of words to preserve (top
+        words).
+    :param max_seq_len: int, maximum length of all sequences.
     :return: (numpy.ndarray, dict), generated sequences and word index.
     """
     tokenizer = Tokenizer(num_words=max_words)
@@ -58,7 +60,7 @@ def get_sequences_and_word_index_table(texts, max_words=None):
     sequences = tokenizer.texts_to_sequences(texts)
 
     # Pad sequences
-    sequences = pad_sequences(sequences, padding='post')
+    sequences = pad_sequences(sequences, padding='post', maxlen=max_seq_len)
 
     word_index = tokenizer.word_index
     word_index['<pad>'] = 0

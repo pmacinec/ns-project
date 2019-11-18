@@ -4,8 +4,8 @@ import datetime
 import numpy as np
 from config import parse_input_parameters, get_config
 from model import FakeNewsDetectionNet
-from preprocessing import read_data, get_sequences_and_word_index_table, \
-    split_data, get_embeddings_matrix
+from preprocessing import read_data, get_sequences_and_word_index, split_data,\
+    get_embeddings_matrix
 from fasttext import read_fasttext_model
 import tensorflow.keras as keras
 
@@ -37,21 +37,27 @@ def get_model(dim_input, dim_embeddings, embeddings, optimizer):
     return model
 
 
-def prepare_data(data_path=None, max_words=None, test_size=0.15):
+def prepare_data(
+        data_path=None,
+        max_words=None,
+        test_size=0.15,
+        max_seq_len=None
+):
     """
     Function to load and prepare data for training.
 
     :param data_path: str, path where csv file is stored.
     :param max_words: int, maximum number of top words in vocabulary.
     :param test_size: float, train test split rate.
+    :param max_seq_len: int, maximum length of all sequences.
     :return: list, list of data and word index in format:
         x_train, x_test, y_train, y_test, word_index
     """
     data = read_data(data_path)
 
     labels = np.asarray(data['label'])
-    sequences, word_index = get_sequences_and_word_index_table(
-        data['body'], max_words
+    sequences, word_index = get_sequences_and_word_index(
+        data['body'], max_words, max_seq_len
     )
 
     print(f'Count of unique tokens: {len(word_index)}')
@@ -93,7 +99,8 @@ def train(config):
     x_train, x_test, y_train, y_test, word_index = prepare_data(
         data_path=config['data_file'],
         max_words=config['max_words'],
-        test_size=config['test_size']
+        test_size=config['test_size'],
+        max_seq_len=config['max_seq_len']
     )
 
     # Read pre-trained fasttext embeddings
