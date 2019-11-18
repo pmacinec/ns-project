@@ -5,5 +5,5 @@
   "epochs": 5,
   "logs_folder": "logs",
   "max_words": 30000,
-  "max_seq_len": 1000
+  "max_seq_len": 2500
 }
