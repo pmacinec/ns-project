@@ -41,8 +41,6 @@ def parse_input_parameters():
                         help="Learning rate to be used in training.")
     parser.add_argument("-hl", "--num_hidden_layers", dest="num_hidden_layers",
                         help="Number of hidden layers.")
-    parser.add_argument("-l", "--logs", dest="logs_folder",
-                        help="Path to logs folder")
     parser.add_argument("-e", "--epochs", dest="epochs",
                         help="Number of epochs to train.")
     parser.add_argument("-w", "--max_words", dest="max_words",
@@ -68,7 +66,7 @@ def load_custom_configs(config, args):
     :return: dict, updated config.
     """
     args_names = ['batch_size', 'learning_rate', 'num_hidden_layers',
-                  'logs_folder', 'epochs', 'max_words', 'num_samples',
+                  'epochs', 'max_words', 'num_samples',
                   'data_file', 'test_size', 'max_seq_len']
 
     for arg in args_names:

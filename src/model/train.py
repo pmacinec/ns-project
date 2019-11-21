@@ -133,14 +133,13 @@ def train(config):
 
     model = get_model(vocabulary_size, 300, embeddings_matrix, optimizer)
 
-
     print('Training the model...')
     model.fit(
         x=x_train,
         y=y_train,
         batch_size=config['batch_size'],
         validation_data=(x_test, y_test),
-        callbacks=get_callbacks(logs_dir=config['logs_folder']),
+        callbacks=get_callbacks(),
         epochs=config['epochs']
     )
 
