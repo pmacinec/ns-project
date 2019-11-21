@@ -138,7 +138,7 @@ def train(config):
     del word_index
     gc.collect()
 
-    optimizer = keras.optimizers.RMSprop(learning_rate=config['learning_rate'])
+    optimizer = keras.optimizers.Adam(learning_rate=config['learning_rate'])
 
     model = get_model(vocabulary_size, 300, embeddings_matrix, optimizer)
 
