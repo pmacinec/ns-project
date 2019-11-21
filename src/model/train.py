@@ -71,24 +71,33 @@ def prepare_data(
     return x_train, x_test, y_train, y_test, word_index
 
 
-def get_callbacks(logs_dir='logs', logs_name=None):
+def get_callbacks(logs_dir='logs', logs_name=None, checkpoint_path='models'):
     """
     Function to get callbacks for training.
 
-    :param logs_dir: str, directory where logs should be generated.
-    :param logs_name: name of current logs.
+    :param logs_dir: str, directory where tensor board logs are generated.
+    :param logs_name: str, name of current logs.
+    :param checkpoint_path: str, path where checkopints are stored. 
     :return: list, list of callbacks.
     """
     if logs_name is None:
         logs_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard = keras.callbacks.TensorBoard(
+        log_dir=join(dirname(__file__), f'../../{logs_dir}/{logs_name}'),
+        histogram_freq=1,
+        profile_batch=0
+    )
 
-    return [
-        keras.callbacks.TensorBoard(
-            log_dir=os.path.join(logs_dir, logs_name),
-            histogram_freq=1,
-            profile_batch=0
-        )
-    ]
+    checkpoint = keras.callbacks.ModelCheckpoint(
+        filepath=join(dirname(__file__), f'../../{checkpoint_path}/model.ckpt'),
+        save_weights_only=True,
+        verbose=1,
+        monitor='val_accuracy',
+        save_best_only=True,
+        mode='max'
+    )
+
+    return [tensorboard, checkpoint]
 
 
 def train(config):
@@ -144,8 +153,6 @@ def train(config):
     )
 
     model.summary()
-
-    # TODO add storing model to models folder.
 
     return model
 
