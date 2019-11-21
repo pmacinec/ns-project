@@ -35,23 +35,23 @@ def parse_input_parameters():
 
     parser.add_argument("-f", "--file", dest="config_file",
                         help="Path to config file.")
-    parser.add_argument("-bs", "--batch_size", dest="batch_size",
+    parser.add_argument("-bs", "--batch-size", dest="batch_size",
                         help="Batch size to be used in training.")
-    parser.add_argument("-lr", "--learning_rate", dest="learning_rate",
+    parser.add_argument("-lr", "--learning-rate", dest="learning_rate",
                         help="Learning rate to be used in training.")
-    parser.add_argument("-hl", "--num_hidden_layers", dest="num_hidden_layers",
+    parser.add_argument("-hl", "--num-hidden-layers", dest="num_hidden_layers",
                         help="Number of hidden layers.")
     parser.add_argument("-e", "--epochs", dest="epochs",
                         help="Number of epochs to train.")
-    parser.add_argument("-w", "--max_words", dest="max_words",
+    parser.add_argument("-w", "--max-words", dest="max_words",
                         help="Maximum words in vocabulary to use.")
     parser.add_argument("-s", "--samples", dest="num_samples", default=None,
                         help="Number of samples from data.")
     parser.add_argument("-d", "--data", dest="data_file",
                         help="Path to data csv file.")
-    parser.add_argument("-t", "--test_size", dest="test_size",
+    parser.add_argument("-t", "--test-size", dest="test_size",
                         help="Train test split rate (test size).")
-    parser.add_argument("-sl", "--max_sequence_len", dest="max_seq_len",
+    parser.add_argument("-sl", "--max-sequence-len", dest="max_seq_len",
                         help="Maximum length of all sequences.")
     parser.add_argument("-lstm", "--lstm-units", dest="lstm_units",
                         help="Number of units in LSTM layer.")
