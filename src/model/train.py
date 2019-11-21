@@ -11,7 +11,12 @@ from fasttext import read_fasttext_model
 import tensorflow.keras as keras
 
 
-def get_model(dim_input, dim_embeddings, embeddings, optimizer):
+def get_model(
+        dim_input,
+        dim_embeddings,
+        embeddings, optimizer,
+        lstm_units=64,
+        num_hidden_layers=1):
     """
     Function to get compiled model, ready for training.
 
@@ -21,12 +26,16 @@ def get_model(dim_input, dim_embeddings, embeddings, optimizer):
     :param embeddings: np.ndarray, matrix of pre-trained embeddings.
     :param optimizer: str|keras.optimizers.Optimizer, optimizer to be
         used in training.
+    :param lstm_units: int, number of units in LSTM layer.
+    :param num_hidden_layers: int, number of hidden dense layers.
     :return: FakeNewsDetectionNet, compiled Keras model.
     """
     model = FakeNewsDetectionNet(
         dim_input=dim_input,
         dim_embeddings=dim_embeddings,
-        embeddings=embeddings
+        embeddings=embeddings,
+        lstm_units=lstm_units,
+        num_hidden_layers=num_hidden_layers
     )
 
     model.compile(
@@ -140,7 +149,14 @@ def train(config):
 
     optimizer = keras.optimizers.Adam(learning_rate=config['learning_rate'])
 
-    model = get_model(vocabulary_size, 300, embeddings_matrix, optimizer)
+    model = get_model(
+        vocabulary_size,
+        300,
+        embeddings_matrix,
+        optimizer,
+        int(config.get('lstm_units')),
+        int(config.get('num_hidden_layers'))
+    )
 
     print('Training the model...')
     model.fit(

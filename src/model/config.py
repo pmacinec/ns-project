@@ -53,6 +53,8 @@ def parse_input_parameters():
                         help="Train test split rate (test size).")
     parser.add_argument("-sl", "--max_sequence_len", dest="max_seq_len",
                         help="Maximum length of all sequences.")
+    parser.add_argument("-lstm", "--lstm-units", dest="lstm_units",
+                        help="Number of units in LSTM layer.")
 
     return parser.parse_args()
 
@@ -66,7 +68,7 @@ def load_custom_configs(config, args):
     :return: dict, updated config.
     """
     args_names = ['batch_size', 'learning_rate', 'num_hidden_layers',
-                  'epochs', 'max_words', 'num_samples',
+                  'epochs', 'max_words', 'num_samples', 'lstm_units',
                   'data_file', 'test_size', 'max_seq_len']
 
     for arg in args_names:
