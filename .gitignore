@@ -5,6 +5,7 @@ __pycache__/
 .env
 data
 !src/data
+src/data/retrieval/config.json
 models
 !src/models
 logs
