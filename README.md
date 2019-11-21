@@ -36,6 +36,37 @@ Training proposed neural network has to be done in running docker container `fak
     **Note:** All arguments are listed in section **Training configuration**.
 
 
+## Training configuration
+
+To configure training and neural network model, two options are available:
+1. Use arguments when calling training script:
+
+    |       Argument       | Short   | Value type | Description |
+    |----------------------|:-------:|:----------:|-------------|
+    | `--file`             | `-f`    | `<str>`    | path to custom config file (discussed in second part) |
+    | `--batch-size`       | `-bs`   | `<int>`    | batch size to be used in training |
+    | `--learning-rate`    | `-lr`   | `<float>`  | learning rate to be used in training |
+    | `--num-hidden-layers`| `-hl`   | `<int>`    | number of hidden layers |
+    | `--epochs`           | `-e`    | `<int>`    | number of epochs to train |
+    | `--max-words`        | `-w`    | `<int>`    | maximum words in vocabulary to use |
+    | `--samples`          | `-s`    | `<int>`    | number of samples from data (by default, all are used) |
+    | `--data`             | `-d`    | `<str>`    | not required - path to data csv file |
+    | `--test-size`        | `-t`    | `<float>`  | train test split rate (test size) |
+    | `--max-sequence-len` | `-sl`   | `<int>`    | maximum length of all sequences |
+    | `--lstm-units`       | `-lstm` | `<int>`    | number of units in LSTM layer |
+1. Write custom config file (in JSON format) and pass path to it as train script call argument (`--file`/`-f`). **Remember, that script call arguments replace config file arguments!** Example of config file:
+    ```json
+    {
+        "batch_size": 32,
+        "learning_rate": 0.001,
+        "epochs": 15,
+        "lstm_units": 64
+    }
+    ```
+   Allowed parameters: `batch_size`, `learning_rate`, `num_hidden_layers`, `epochs`, `max_words`, `num_samples`, `data_file`, `test_size`, `max_seq_len`, `lstm_units`. For description of those values, see table above (all values can be semantically mapped to arguments in table).
+
+
+
 ## Data retrieval
 
 For training our neural network, we used data from Monant platform. Data can be retrieved by following steps:
@@ -54,7 +85,3 @@ For training our neural network, we used data from Monant platform. Data can be 
     $ python src/data/retrieval/data_saver.py
     ```
 1. According to above config, data will be stored in `data/raw` folder.
-
-
-## Training configuration
-TODO
