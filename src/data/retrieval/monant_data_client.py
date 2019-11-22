@@ -6,9 +6,19 @@ from os import mkdir
 
 
 class CentralStorageClient:
+    """
+    Client to perform authorized requests on Monant platform.
+
+    :param token: str (static), token to be used in authorization.
+    :param username: str, username for authorization to central storage.
+    :param password: str, password for authorization to central storage.
+    :param api_host: str, url of Monant platform API.
+    :param data_folder: str, path of folder where data will be stored.
+    """
     token = None
 
     def __init__(self, username, password, api_host, data_folder):
+        """Create object of the class CentralStorageClient."""
         self.username = username
         self.password = password
         self.api_host = api_host
@@ -25,9 +35,21 @@ class CentralStorageClient:
 
     @staticmethod
     def is_authorized():
+        """
+        Check whether client is authorized to Monant platform API.
+
+        :return: bool, check result.
+        """
         return CentralStorageClient.token is not None
 
     def authorize(self):
+        """
+        Authorize client to Monant platform.
+
+        Authorize client with POST request (/auth} on Monant platform.
+
+        :return: bool, result of authorization request.
+        """
         login_data = {
             'username': self.username,
             'password': self.password,
@@ -42,18 +64,34 @@ class CentralStorageClient:
         return False
 
     def get_authorization_token(self):
+        """
+        Get authorization token.
+
+        Get token to be authorized to Monant platform API. If client
+        has been already authorized, token will be returned, otherwise
+        authorization is performed at first.
+
+        :return: str, authorization token.
+        """
         if not CentralStorageClient.is_authorized():
             self.authorize()
 
         return CentralStorageClient.token
 
     def get_request_headers(self):
+        """
+        Get headers list to handle authorization in requests.
+
+        :return: dict, request headers.
+        """
         return {
             'Authorization': 'JWT ' + self.get_authorization_token()
         }
 
     def get_data(self):
-        
+        """
+        Get articles data from Monant platform and save to JSON files.
+        """
         has_next_page = True
         page = 1
         while has_next_page:
@@ -71,6 +109,11 @@ class CentralStorageClient:
             time.sleep(2.5)
 
     def save_articles(self, articles):
+        """
+        Save articles into JSON files.
+
+        :param articles: dict, articles objects.
+        """
         for article in articles:
             with open(
                     f'{self.data_folder}/articles/{article.get("id")}.json',
@@ -85,6 +128,17 @@ class CentralStorageClient:
             order_type='asc',
             order_by=None
     ):
+        """
+        Get articles from Monant platform.
+
+        :param size: int (default: None), size of the result - number
+            of articles to be returned.
+        :param page: int (default: None), page to be shown.
+        :param order_type: str (default: None), way of ordering results
+            (asc or desc).
+        :param order_by: str (default: None), column used for ordering.
+        :return: dict , list of articles and pagination.
+        """
         params = {}
 
         if order_type and order_by:
@@ -110,7 +164,10 @@ class CentralStorageClient:
         return response
 
     def save_annotations(self):
-
+        """
+        Get entity annotations from Monant platform and save them to
+        JSON files.
+        """
         r = requests.get(
             f'{self.api_host}/v1/entity-annotations?'
             f'annotation_type=Source reliability (binary)&size=100',
