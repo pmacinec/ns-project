@@ -78,7 +78,7 @@ def get_sequences_and_word_index(texts, max_words=None, max_seq_len=None):
 
 def get_embeddings_matrix(word_index, pretrained_embeddings, embeddings_dim):
     """
-    Function to get embeddings matrix from word index and pre-trained_
+    Function to get embeddings matrix from word index and pre-trained
     embeddings (e.g. fastText).
 
     :param word_index: dict, dictionary of format 'word: index'.

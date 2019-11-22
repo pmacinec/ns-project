@@ -3,11 +3,6 @@ from os.path import dirname, isfile
 from argparse import ArgumentParser
 
 
-# TODO add script call params into README, also do not forget to mention
-# TODO that config in file is overwritten by args passed by script call
-
-# TODO add steps how to create config file into README
-
 def load_config(path=None):
     """
     Load config from specified JSON file.

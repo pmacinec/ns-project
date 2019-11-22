@@ -84,7 +84,7 @@ def get_callbacks(logs_dir='logs', logs_name=None, checkpoint_path='models'):
     """
     Function to get callbacks for training.
 
-    :param logs_dir: str, directory where tensor board logs are generated.
+    :param logs_dir: str, directory where training logs are generated.
     :param logs_name: str, name of current logs.
     :param checkpoint_path: str, path where checkopints are stored. 
     :return: list, list of callbacks.
@@ -97,8 +97,12 @@ def get_callbacks(logs_dir='logs', logs_name=None, checkpoint_path='models'):
         profile_batch=0
     )
 
+    checkpoint_filepath = join(
+        dirname(__file__),
+        f'../../{checkpoint_path}/model.ckpt'
+    )
     checkpoint = keras.callbacks.ModelCheckpoint(
-        filepath=join(dirname(__file__), f'../../{checkpoint_path}/model.ckpt'),
+        filepath=checkpoint_filepath,
         save_weights_only=True,
         verbose=1,
         monitor='val_accuracy',
