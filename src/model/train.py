@@ -97,9 +97,10 @@ def get_callbacks(logs_dir='logs', logs_name=None, checkpoint_path='models'):
         profile_batch=0
     )
 
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     checkpoint_filepath = join(
         dirname(__file__),
-        f'../../{checkpoint_path}/model.ckpt'
+        f'../../{checkpoint_path}/{timestamp}/model.ckpt'
     )
     checkpoint = keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_filepath,
