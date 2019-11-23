@@ -111,7 +111,12 @@ def get_callbacks(logs_dir='logs', logs_name=None, checkpoint_path='models'):
         mode='max'
     )
 
-    return [tensorboard, checkpoint]
+    early_stopping = keras.callbacks.EarlyStopping(
+        monitor='val_accuracy', 
+        patience=3
+    )
+
+    return [tensorboard, checkpoint, early_stopping]
 
 
 def train(config):
