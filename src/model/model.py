@@ -30,7 +30,9 @@ class FakeNewsDetectionNet(keras.Model):
                 trainable=False,
                 mask_zero=True
         )
-        self.lstm_layer = keras.layers.LSTM(lstm_units)
+        self.lstm_layer = keras.layers.Bidirectional(
+            keras.layers.LSTM(lstm_units)
+        )
         self.dense_layers = [
             keras.layers.Dense(
                 units=lstm_units,
