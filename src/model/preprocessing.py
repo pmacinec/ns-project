@@ -53,6 +53,12 @@ def get_sequences_and_word_index(texts, max_words=None, max_seq_len=None):
     :param max_seq_len: int, maximum length of all sequences.
     :return: (numpy.ndarray, dict), generated sequences and word index.
     """
+    if max_words is not None:
+        max_words = int(max_words)
+
+    if max_seq_len is not None:
+        max_seq_len = int(max_seq_len)
+
     tokenizer = Tokenizer(num_words=max_words)
     tokenizer.fit_on_texts(texts)
     
