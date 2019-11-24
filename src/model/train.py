@@ -71,7 +71,6 @@ def prepare_data(
         data['body'], max_words, max_seq_len
     )
 
-    print(f'Count of unique tokens: {len(word_index)}')
     print(f'Sequences shape: {sequences.shape}')
 
     x_train, x_test, y_train, y_test = split_data(sequences, labels, test_size)

@@ -69,6 +69,8 @@ def get_sequences_and_word_index(texts, max_words=None, max_seq_len=None):
     sequences = pad_sequences(sequences, padding='post', maxlen=max_seq_len)
 
     word_index = tokenizer.word_index
+    print(f'Count of unique tokens: {len(word_index)}')
+
     word_index['<pad>'] = 0
     if max_words is not None:
         # This step is done due to issue on keras Tokenizer:
