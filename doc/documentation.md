@@ -14,13 +14,13 @@ Full architecture of our model is shown in the picture below:
 
 ![Model architecture](../images/model_architecture.png)
 
-**Embedings layer** 
+**Embedings layer**    
 First layer in our model is Embedding layer. We are using pre-trained fastText embeddings as weigths initialization, but then it is not trainable. Then, before sending it to LSTM layer we mask the added padding, so LSTM layer would ignore all 0 in sequences.
 
-**Bidirectional LSTM layer** 
+**Bidirectional LSTM layer**    
 Next we are using Birirectional LSTM layer, because we are dealing with longer textual data (articles). This layer has 64 units (this is also hyperparameter for us).
 
-**Dense layer**
+**Dense layer**   
 Then we have Dense layer with ReLu activation function and same number of units as LSTM layer before. Number of these layers is hyperparameter and can be easily changed.
 
 **Final Dense layer**  
