@@ -1,4 +1,4 @@
-# Fake news detection documentation
+# Fake news detection
 **Authors:** Peter Mačinec & Simona Miková
 
 
@@ -12,7 +12,7 @@ Our task is to clasify article reliability using neural network model.
 
 Full architecture of our model is shown in the picture below:
 
-![Model](images/model_architecture.png)
+![Model architecture](../images/model_architecture.png)
 
 **Embedings layer** 
 First layer in our model is Embedding layer. We are using pre-trained fastText embeddings as weigths initialization, but then it is not trainable. Then, before sending it to LSTM layer we mask the added padding, so LSTM layer would ignore all 0 in sequences.
