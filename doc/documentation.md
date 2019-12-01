@@ -44,8 +44,23 @@ All of those parameters can be tuned to achieve best results:
 ### Dataset
 We are using dataset  from Monant platform. It contains medical articles aquired from a variety of sources. Data were cleaned during preprocessing and only body and label columns were kept. Label column were balanced  additionaly (now containing 32856  records for each class). 
 
-### Training
+### Training configuration
+
+**Parameters of training**
+
 In training we have been using these parameters:
 * Adam as optimizer (this one can be also changed, because it is hyperparameter),
 * binary_crossentropy as loss function,
 * accuracy as a metric.
+
+**Model checkpoint**
+
+All trainings produce also best model achieved during training. Only best model (according to *validation accuracy*) is saved from all training epochs.
+
+**Early stopping**
+
+Early stopping is used in our model training with following configuration:
+* monitored value is *validation accuracy*,
+* if model is not improving during 3 epochs, training is stopped.
+
+### Training logs and results
