@@ -100,7 +100,7 @@ def get_callbacks(training_name=None):
     )
     checkpoint = keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_filepath,
-        save_weights_only=True,
+        save_weights_only=False,
         verbose=1,
         monitor='val_accuracy',
         save_best_only=True,
