@@ -78,27 +78,25 @@ def prepare_data(
     return x_train, x_test, y_train, y_test, word_index
 
 
-def get_callbacks(logs_dir='logs', logs_name=None, checkpoint_path='models'):
+def get_callbacks(training_name=None):
     """
     Function to get callbacks for training.
 
-    :param logs_dir: str, directory where training logs are generated.
-    :param logs_name: str, name of current logs.
-    :param checkpoint_path: str, path where checkopints are stored. 
+    :param training_name: str, name of current training (also the folder
+        name for both, logs and checkpoint model).
     :return: list, list of callbacks.
     """
-    if logs_name is None:
-        logs_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    if training_name is None:
+        training_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard = keras.callbacks.TensorBoard(
-        log_dir=join(dirname(__file__), f'../../{logs_dir}/{logs_name}'),
+        log_dir=join(dirname(__file__), f'../../logs/{training_name}'),
         histogram_freq=1,
         profile_batch=0
     )
 
-    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     checkpoint_filepath = join(
         dirname(__file__),
-        f'../../{checkpoint_path}/{timestamp}/model.ckpt'
+        f'../../models/{training_name}/model.ckpt'
     )
     checkpoint = keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_filepath,
@@ -172,7 +170,7 @@ def train(config):
         y=y_train,
         batch_size=config['batch_size'],
         validation_data=(x_test, y_test),
-        callbacks=get_callbacks(),
+        callbacks=get_callbacks(config.get('name', None)),
         epochs=config['epochs']
     )
 

@@ -50,6 +50,8 @@ def parse_input_parameters():
                         help="Maximum length of all sequences.")
     parser.add_argument("-lstm", "--lstm-units", dest="lstm_units",
                         help="Number of units in LSTM layer.")
+    parser.add_argument("-n", "--name", dest="name",
+                        help="Name of training (also folder name).")
 
     return parser.parse_args()
 
@@ -64,7 +66,7 @@ def load_custom_configs(config, args):
     """
     args_names = ['batch_size', 'learning_rate', 'num_hidden_layers',
                   'epochs', 'max_words', 'num_samples', 'lstm_units',
-                  'data_file', 'test_size', 'max_seq_len']
+                  'data_file', 'test_size', 'max_seq_len', 'name']
 
     for arg in args_names:
         if getattr(args, arg) is not None:

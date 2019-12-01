@@ -35,6 +35,8 @@ Training proposed neural network has to be done in running docker container `fak
     ```
     **Note:** All arguments are listed in section **Training configuration**.
 
+All training logs are stored in `logs` folder and model checkpoints in `models` folder. By default, concrete training logs and checkopint models are stored in timestamp folder inside `logs` or `models`  folders. For using custom folder name instead of timestamp, use script call argument `--name` when starting training.
+
 
 ## Training configuration
 
@@ -54,6 +56,7 @@ To configure training and neural network model, two options are available:
     | `--test-size`        | `-t`    | `<float>`  | train test split rate (test size) |
     | `--max-sequence-len` | `-sl`   | `<int>`    | maximum length of all sequences |
     | `--lstm-units`       | `-lstm` | `<int>`    | number of units in LSTM layer |
+    | `--name`             | `-n`    | `<str>`    | training name - also folder name for logs and checkpoint model |
 1. Write custom config file (in JSON format) and pass path to it as train script call argument (`--file`/`-f`). **Remember, that script call arguments replace config file arguments!** Example of config file:
     ```json
     {
