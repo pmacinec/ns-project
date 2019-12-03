@@ -254,6 +254,27 @@ class TextPreprocessor(TransformerMixin):
         df_copy[self.column] = df_copy[self.column].apply(
             lambda text: re.sub(r'<!--//<!\[CDATA\[[^\]]*\]\]>-->', '', text)
         )
+        # Remove specific sentences repeating in many articles
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r'feel free to share this neuroscience news.', '', text)
+        )
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r'(sources for this article include:([^\s]+[\w]*)*)', '', text)
+        )
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r'(naturalnews)', '', text)
+        )
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r"Please enter a valid email address. Privacy Policy Leave this field empty if you're human", '', text)
+        )
+        # Remove keywords specific for newsletters 
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r'sign up', '', text)
+        )
+        df_copy[self.column] = df_copy[self.column].apply(
+            lambda text: re.sub(r'newsletters|newsletter', '', text)
+        )
+         
 
         end_time = time.time()
         print(f'TextPreprocessor transformation ended, took '
