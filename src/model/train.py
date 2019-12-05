@@ -190,7 +190,7 @@ def train(config):
         batch_size=config['batch_size'],
         validation_data=(x_test, y_test),
         callbacks=get_callbacks(training_name),
-        epochs=config['epochs']
+        epochs=int(config.get('epochs', 0))
     )
 
     model.summary()
