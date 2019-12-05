@@ -8,6 +8,7 @@ from preprocessing import read_data, get_sequences_and_word_index, split_data,\
     get_embeddings_matrix
 from fasttext import read_fasttext_model
 import tensorflow.keras as keras
+import pickle
 
 
 def get_model(
@@ -78,7 +79,7 @@ def prepare_data(
     return x_train, x_test, y_train, y_test, word_index
 
 
-def get_callbacks(training_name=None):
+def get_callbacks(training_name):
     """
     Function to get callbacks for training.
 
@@ -86,8 +87,6 @@ def get_callbacks(training_name=None):
         name for both, logs and checkpoint model).
     :return: list, list of callbacks.
     """
-    if training_name is None:
-        training_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard = keras.callbacks.TensorBoard(
         log_dir=join(dirname(__file__), f'../../logs/{training_name}'),
         histogram_freq=1,
@@ -122,6 +121,10 @@ def train(config):
     :param config: dict, configuration to be used.
     :return: FakeNewsDetectionNet, trained model.
     """
+    training_name = config.get('name', None)
+    if training_name is None:
+        training_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
     # Read the data and get word index
     print('Preparing data...')
     x_train, x_test, y_train, y_test, word_index = prepare_data(
@@ -132,6 +135,8 @@ def train(config):
         samples=config.get('num_samples', None)
     )
     print(f'Data prepared. Vocabulary size: {len(word_index)}.')
+    print('Serializing word index table...')
+    pickle.dump(word_index, f'../../models/{training_name}/word_index.obj')
 
     print('Reading fastText model...')
     # Read pre-trained fasttext embeddings
@@ -170,7 +175,7 @@ def train(config):
         y=y_train,
         batch_size=config['batch_size'],
         validation_data=(x_test, y_test),
-        callbacks=get_callbacks(config.get('name', None)),
+        callbacks=get_callbacks(training_name),
         epochs=config['epochs']
     )
 
