@@ -143,7 +143,13 @@ def train(config):
     print('Serializing word index table...')
     pickle.dump(
         word_index,
-        open(f'../../models/{training_name}/word_index.obj', 'wb')
+        open(
+            join(
+                dirname(__file__),
+                f'../../models/{training_name}/word_index.obj'
+            ),
+            'wb'
+        )
     )
 
     print('Reading fastText model...')
