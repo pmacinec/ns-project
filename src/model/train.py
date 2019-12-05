@@ -125,7 +125,10 @@ def train(config):
     training_name = config.get('name', None)
     if training_name is None:
         training_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    makedirs(f'../../models/{training_name}')
+    makedirs(join(
+        dirname(__file__),
+        f'../../models/{training_name}'
+    ))
 
     # Read the data and get word index
     print('Preparing data...')
