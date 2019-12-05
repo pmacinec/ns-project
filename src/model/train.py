@@ -136,7 +136,10 @@ def train(config):
     )
     print(f'Data prepared. Vocabulary size: {len(word_index)}.')
     print('Serializing word index table...')
-    pickle.dump(word_index, f'../../models/{training_name}/word_index.obj')
+    pickle.dump(
+        word_index,
+        open(f'../../models/{training_name}/word_index.obj', 'wb')
+    )
 
     print('Reading fastText model...')
     # Read pre-trained fasttext embeddings
