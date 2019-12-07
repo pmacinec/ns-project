@@ -10,6 +10,10 @@ sys.path.append(abspath(join(dirname(__file__), '../../')))
 from src.data.preprocessing import preprocess_data
 
 
+# TODO has sequence length be the same as when training?
+# TODO fix storing and loading model
+# TODO more beautiful print-out of prediction
+
 def load_model(training_name):
     """
     Load model from specific training.
@@ -60,8 +64,16 @@ def get_text_dataframe(file):
 
 
 def preprocess_input(dataframe, training_name):
+    """
+    Preprocess input dataframe to sequences.
+
+    :param dataframe: pd.DataFrame, dataframe to be preprocessed.
+    :param training_name: str, training name used for reading correct
+        word_index table.
+    :return list, list of sequences for embedding layer.
+    """
     data = preprocess_data([dataframe])[0]
-    print(data)
+
     word_index = pickle.load(
         open(
             join(
@@ -77,17 +89,21 @@ def preprocess_input(dataframe, training_name):
 
 
 def predict(model_name=None, file=None):
-    print(model_name)
+    """
+    Predict text whether it is fake or real using pre-trained model.
+
+    :param model_name: str, name of model to be used for prediction.
+    :param file: str, path to file with news text.
+    """
     model = load_model(model_name)
 
     dataframe = get_text_dataframe(file)
 
     to_predict = preprocess_input(dataframe, model_name)
-    print(to_predict)
+
     prediction = model.predict(to_predict)
-    print(prediction)
-    # TODO add result
-    print('According to model, the text you entered is ...')
+
+    print(f'Model prediction: {prediction}')
 
 
 if __name__ == "__main__":
