@@ -96,7 +96,7 @@ def get_callbacks(training_name):
 
     checkpoint_filepath = join(
         dirname(__file__),
-        f'../../models/{training_name}/model.h5'
+        f'../../models/{training_name}/model'
     )
     checkpoint = keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_filepath,
