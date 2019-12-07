@@ -187,7 +187,7 @@ def train(config):
     model.fit(
         x=x_train,
         y=y_train,
-        batch_size=config['batch_size'],
+        batch_size=int(config.get('batch_size', 0)),
         validation_data=(x_test, y_test),
         callbacks=get_callbacks(training_name),
         epochs=int(config.get('epochs', 0))
