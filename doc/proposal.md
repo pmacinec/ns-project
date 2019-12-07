@@ -34,7 +34,7 @@ The architecture is shown on the image below, however does not include details s
 
 Because it is not clear which of the contextual information we are going to use (it depends on the exploratory analysis), it is illustrated only with blue rectangle for now. Depending on the type of contextual data, this rectangle may be replaced with feature engineering, or another LSTM or even convolutional layers.
 
-![Proposal](images/nn_proposal.png)
+![Proposal](../images/nn_proposal.png)
 
 
 ## References
