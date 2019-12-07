@@ -101,7 +101,7 @@ Because our results were quite good from the beginning, we decided to take a clo
 
 ## Future works
 
-Working on this project for a couple of weeks, we also found some future works that can be done to improve fake news detection:
-**using multimodal features** - our first proposal included also multimodal features (like images of articles or discussions), but they were not used because of time,
-**evaluate model on different datasets** - according to annotation problems mentioned in conclusion, it would be appropriate to evaluate proposed neural network model on different data.
+Working on this project for a couple of weeks, we also found some future works that can be done to improve fake news detection:   
+**using multimodal features** - our first proposal included also multimodal features (like images of articles or discussions), but they were not used because of time,       
+**evaluate model on different datasets** - according to annotation problems mentioned in conclusion, it would be appropriate to evaluate proposed neural network model on different   data.
 
