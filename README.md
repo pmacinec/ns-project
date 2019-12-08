@@ -10,6 +10,7 @@ To run this project, please make sure you have Docker installed and follow the s
     ```shell script
     git clone git@github.com:pmacinec/ns-project.git
     ```
+1. Download pre-trained [fastText embeddings](https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M.vec.zip) and put the `.vec` file into `models/fasttext` folder.
 1. Get into directory with command `cd ns-project/`.
 1. Build image using command:
     ```shell script
