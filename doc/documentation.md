@@ -91,11 +91,11 @@ Subsequently, we have trained our model again on the new data with the following
 
 The selection and hyperparameter tuning was based on our following goals (or on what we wanted to find out):
 1. Impact of maximum sequence length on model prediction
-1. Since model was performing quite well, we tried various alternatives. Mainly adjusting number of LSTM units and a number of hidden dense layers to see when the model is overtraining and when it can achieve good results
-1. Use model without bidirectional layer to compare benefits of its usage
+1. Since model was performing quite well, we tried various alternatives. Mainly adjusting number of LSTM units and a number of hidden dense layers to see when the model is overfitting and when it can achieve good results
+1. Use only basic LSTM layer (instead of bidirectional) to compare benefits of using bidirectional layer
 1. Impact of the maximum number of words on model prediction
 
-All training results are compared with our baseline model mentioned in chapter *Our model architecture*.   
+All training results are compared with our baseline model mentioned in chapter **Our model architecture**.   
 
 1. *Our baseline model*
 ![Model architecture](../images/training_logs/baseline_default_accuracy.png)      
@@ -117,7 +117,7 @@ From the results, we can see, that using regularization had almost no effect on 
 ![Max sequence lenght](../images/training_logs/max_sequence_len_accuracy.png)   
 Baseline model - train (red), validation (blue)   
 Model from this training - train (grey), validation (orange)   
-Next, we decided to significantly reduce the number of max_seq_len (500 instead of 2500). The results are comparable to our baseline model results, but the training itself was shorter, because of early_stopping.   
+Next, we decided to significantly reduce the number of max_seq_len (500 instead of 2500). The results are comparable to our baseline model results, but the training is significantly faster. We can conclude that reducing length of sequences to 500 is nice trade-off of results and speed.   
 
 In the next 2 trainings, we decided to change the number of max_words parameter, to see the results.  
 
@@ -131,33 +131,34 @@ From the results, we can see that the model will learn correctly even with fewer
 ![Max words 100k](../images/training_logs/max_words_100k_accuracy.png)   
 Baseline model - train (red), validation (blue)   
 Model from this training - train (pink), validation (green)   
-As we can see, a larger number of words has almost no effect on the training of the model, and therefore a smaller number of words is quite sufficient, which we can even confirm from the previous training.   
+As we can see, a larger number of words has almost no effect on the training of the model, and therefore a smaller number of words is quite sufficient, which we can even confirm from the previous training.  
 
-In the next section are presented trainings we have tried, based on ... (bod 2):   
+In next trainings, we looked at model hyperparameters (number of hidden layers and LSTM units used).
 
 7. *Setting number of hidden layers to 0*
 ![Without hidden layers](../images/training_logs/no_dense_accuracy.png)   
 Baseline model - train (orange), validation (dark blue)   
-Model from this training - train (red), validation (blue)   
-TODO doplnit zaver
+Model from this training - train (red), validation (blue)
+From training curve we can conclude, that dense layer is not needed at all. The fact that only simple bidirectional LSTM layer is enough for fake news detection can assume too simple problem or problem with the way data were labeled (see **Conclusion** section for more information).
 
 8. *Setting number of LSTM units to 16*
 ![16 LSTM units](../images/training_logs/lstm_units_16_accuracy.png)   
 Baseline model - train (orange), validation (dark blue)   
 Model from this training - train (pink), validation (green)   
-TODO doplnit zaver
+Same as training without dense layer, even only 16 LSTM units are sufficient for our problem and data.
 
 9. *Setting number of LSTM units to 128*
 ![128 LSTM units](../images/training_logs/lstm_units_128_accuracy.png)   
 Baseline model - train (red), validation (blue)   
 Model from this training - train (green), validation (grey)   
-TODO doplnit zaver
+Increasing number of LSTM units to 128 turned out to be too much and we can see that after sixth epoch, model started to overfit.
 
-10. *Setting number of LSTM units to 16 and not using Dense layer*git p   
+10. *Setting number of LSTM units to 16 and not using Dense layer*  
 ![16 LSTM units without dense](../images/training_logs/lstm_16_no_dense_accuracy.png)   
 Baseline model - train (orange), validation (dark blue)      
 Model from this training - train (red), validation (blue)   
-TODO doplnit zaver
+Even in this case, model is still performing well. Check chapter **Conclusion**, where problem with data or problem simplicity is explained.
+
 
 ## Conclusion
 
