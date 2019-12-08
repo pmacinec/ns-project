@@ -95,77 +95,68 @@ The selection and hyperparameter tuning was based on our following goals (or on 
 1. Use model without bidirectional layer to compare benefits of its usage
 1. Impact of the maximum number of words on model prediction
 
-All training results are compared with our baseline model mentioned in chapter *Our model architecture*.
+All training results are compared with our baseline model mentioned in chapter *Our model architecture*.   
 
-1. Our baseline model
-![Model architecture](../images/training_logs/baseline_default_accuracy.png)
-In the picture, we can see model accuracy for train (red) and validation (blue) dataset. We achieved quite good results just with our baseline model, so in next trainings, we decided to test some other hyperparameter settings, as was mentioned above.
+1. *Our baseline model*
+![Model architecture](../images/training_logs/baseline_default_accuracy.png)      
+In the picture, we can see model accuracy for train (red) and validation (blue) dataset. We achieved quite good results just with our baseline model, so in next trainings, we decided to test some other hyperparameter settings, as was mentioned above.   
 
-2. Model with LSTM only (without bidirectional layer)
-![Model architecture](../images/training_logs/lstm_only_accuracy.png)
-Baseline model - train (red), validation (blue)
-Model from this training - train (orange), validation (dark blue)
+2. *Model with LSTM only (without bidirectional layer)*
+![Model architecture](../images/training_logs/lstm_only_accuracy.png)   
+Baseline model - train (red), validation (blue)   
+Model from this training - train (orange), validation (dark blue)   
+From the results, we can see that our baseline model accuracy was higher than accuracy of model with LSTM layer only instead of bidirectional LSTM layer. So we can say, that the use of bidirectional LSTM layer is reasonable in this problem.   
 
-From the results, we can see that our baseline model accuracy was higher than accuracy of model with LSTM layer only instead of bidirectional LSTM layer. So we can say, that the use of bidirectional LSTM layer is reasonable in this problem.
+3. *Using regularization*
+![Regularization](../images/training_logs/regularization_accuracy.png)   
+Baseline model - train (red), validation (blue)   
+Model from this training - train (pink), validation (green)   
+From the results, we can see, that using regularization had almost no effect on accuracy in comparison to our baseline model.   
 
-3. Using regularization
-![Regularization](../images/training_logs/regularization_accuracy.png)
-Baseline model - train (red), validation (blue)
-Model from this training - train (pink), validation (green)
+4. *Set max_seq_len to 500*
+![Max sequence lenght](../images/training_logs/max_sequence_len_accuracy.png)   
+Baseline model - train (red), validation (blue)   
+Model from this training - train (grey), validation (orange)   
+Next, we decided to significantly reduce the number of max_seq_len (500 instead of 2500). The results are comparable to our baseline model results, but the training itself was shorter, because of early_stopping.   
 
-From the results, we can see, that using regularization had almost no effect on accuracy in comparison to our baseline model.
+In the next 2 trainings, we decided to change the number of max_words parameter, to see the results.  
 
-4. Set max_seq_len to 500
-![Max sequence lenght](../images/training_logs/max_sequence_length_accuracy.png)
-Baseline model - train (red), validation (blue)
-Model from this training - train (grey), validation (orange)
+5. *Setting number of max_words to 10000*
+![Max words 10k](../images/training_logs/max_words_10k_accuracy.png)   
+Baseline model - train (red), validation (blue)    
+Model from this training - train (orange), validation (dark blue)   
+From the results, we can see that the model will learn correctly even with fewer words, which may be useful in terms of memory.   
 
-Next, we decided to significantly reduce the number of max_seq_len (500 instead of 2500). The results are comparable to our baseline model results, but the training itself was shorter, because of early_stopping.
+6. *Setting max words to 100000*
+![Max words 100k](../images/training_logs/max_words_100k_accuracy.png)   
+Baseline model - train (red), validation (blue)   
+Model from this training - train (pink), validation (green)   
+As we can see, a larger number of words has almost no effect on the training of the model, and therefore a smaller number of words is quite sufficient, which we can even confirm from the previous training.   
 
-In the next 2 trainings, we decided to change the number of max_words parameter, to see the results. 
+In the next section are presented trainings we have tried, based on ... (bod 2):   
 
-5. Setting number of max_words to 10000
-![Max words 10k](../images/training_logs/max_words_10k_accuracy.png)
-Baseline model - train (red), validation (blue)
-Model from this training - train (orange), validation (dark blue)
-
-From the results, we can see that the model will learn correctly even with fewer words, which may be useful in terms of memory.
-
-6. Setting max words to 100000
-![Max words 100k](../images/training_logs/max_words_100k_accuracy.png)
-Baseline model - train (red), validation (blue)
-Model from this training - train (pink), validation (green)
-
-As we can see, a larger number of words has almost no effect on the training of the model, and therefore a smaller number of words is quite sufficient, which we can even confirm from the previous training.
-
-In the next section are presented trainings we have tried, based on ... (bod 2):
-
-7. Setting number of hidden layers to 0
-![Without hidden layers](../images/training_logs/no_dense_accuracy.png)
-Baseline model - train (orange), validation (dark blue)
-Model from this training - train (red), validation (blue)
-
+7. *Setting number of hidden layers to 0*
+![Without hidden layers](../images/training_logs/no_dense_accuracy.png)   
+Baseline model - train (orange), validation (dark blue)   
+Model from this training - train (red), validation (blue)   
 TODO doplnit zaver
 
-8. Setting number of LSTM units to 16
-![16 LSTM units](../images/training_logs/lstm_16_accuracy.png)
-Baseline model - train (orange), validation (dark blue)
-Model from this training - train (pink), validation (green)
-
+8. *Setting number of LSTM units to 16*
+![16 LSTM units](../images/training_logs/lstm_units_16_accuracy.png)   
+Baseline model - train (orange), validation (dark blue)   
+Model from this training - train (pink), validation (green)   
 TODO doplnit zaver
 
-9. Setting number of LSTM units to 128
-![128 LSTM units](../images/training_logs/lstm_128_accuracy.png)
-Baseline model - train (red), validation (blue)
-Model from this training - train (green), validation (grey)
-
+9. *Setting number of LSTM units to 128*
+![128 LSTM units](../images/training_logs/lstm_units_128_accuracy.png)   
+Baseline model - train (red), validation (blue)   
+Model from this training - train (green), validation (grey)   
 TODO doplnit zaver
 
-10. Setting number of LSTM units to 16 and not using Dense layer   
-![16 LSTM units without dense](../images/training_logs/lstm_16_no_dense_accuracy.png)
-Baseline model - train (orange), validation (dark blue)
-Model from this training - train (red), validation (blue)
-
+10. *Setting number of LSTM units to 16 and not using Dense layer*git p   
+![16 LSTM units without dense](../images/training_logs/lstm_16_no_dense_accuracy.png)   
+Baseline model - train (orange), validation (dark blue)      
+Model from this training - train (red), validation (blue)   
 TODO doplnit zaver
 
 ## Conclusion
