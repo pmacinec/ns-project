@@ -57,9 +57,9 @@ We are using dataset from Monant platform. It contains medical articles acquired
 **Parameters of training**
 
 In training we have been using these parameters:
-* Adam as optimizer (this one can be also changed, because it is hyperparameter),
-* binary_crossentropy as loss function,
-* accuracy as a metric.
+* *Adam* as optimizer (this one can be also changed, because it is hyperparameter),
+* *binary crossentropy* as loss function,
+* *accuracy* as a metric.
 
 **Model checkpoint**
 
@@ -102,6 +102,6 @@ Because our results were quite good from the beginning, we decided to take a clo
 ## Future works
 
 Working on this project for a couple of weeks, we also found some future works that can be done to improve fake news detection:   
-**using multimodal features** - our first proposal included also multimodal features (like images of articles or discussions), but they were not used because of time,       
-**evaluate model on different datasets** - according to annotation problems mentioned in conclusion, it would be appropriate to evaluate proposed neural network model on different   data.
+* **using multimodal features** - our first proposal included also multimodal features (like images of articles or discussions), but they were not used because of time,       
+* **evaluate model on different datasets** - according to annotation problems mentioned in conclusion, it would be appropriate to evaluate proposed neural network model on different   data.
 
