@@ -138,7 +138,7 @@ In next trainings, we looked at model hyperparameters (number of hidden layers a
 7. *Setting number of hidden layers to 0*
 ![Without hidden layers](../images/training_logs/no_dense_accuracy.png)   
 Baseline model - train (orange), validation (dark blue)   
-Model from this training - train (red), validation (blue)
+Model from this training - train (red), validation (blue)   
 From training curve we can conclude, that dense layer is not needed at all. The fact that only simple bidirectional LSTM layer is enough for fake news detection can assume too simple problem or problem with the way data were labeled (see **Conclusion** section for more information).
 
 8. *Setting number of LSTM units to 16*
