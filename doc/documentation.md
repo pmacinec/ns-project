@@ -45,7 +45,7 @@ All of those parameters can be tuned to achieve best results:
 * maximum words in vocabulary to use - 30 000 by default (based on the frequency of words and the ratio of found / not found words in fastText embedding)
 * maximum length of all sequences - based on analysis of dataset we have set default value to 2500
 
-![Model architecture](../images/num_of_words.png)
+<img src="../images/num_of_words.png" alt="Histogram with number of words" width="500"/>
 
 ## Experiments
 
@@ -97,64 +97,85 @@ The selection and hyperparameter tuning was based on our following goals (or on 
 
 All training results are compared with our baseline model mentioned in chapter **Our model architecture**.   
 
-1. *Our baseline model*
-![Model architecture](../images/training_logs/baseline_default_accuracy.png)      
+#### 1. Our baseline model
+
+<img src="../images/training_logs/baseline_default_accuracy.png" alt="Baseline model" width="500"/>
+
 In the picture, we can see model accuracy for train (red) and validation (blue) dataset. We achieved quite good results just with our baseline model, so in next trainings, we decided to test some other hyperparameter settings, as was mentioned above.   
 
-2. *Model with LSTM only (without bidirectional layer)*
-![Model architecture](../images/training_logs/lstm_only_accuracy.png)   
+#### 2. Model with LSTM only (without bidirectional layer)
+
+<img src="../images/training_logs/lstm_only_accuracy.png" alt="Basic LSTM only" width="500"/>
+
 Baseline model - train (red), validation (blue)   
 Model from this training - train (orange), validation (dark blue)   
 From the results, we can see that our baseline model accuracy was higher than accuracy of model with LSTM layer only instead of bidirectional LSTM layer. So we can say, that the use of bidirectional LSTM layer is reasonable in this problem.   
 
-3. *Using regularization*
-![Regularization](../images/training_logs/regularization_accuracy.png)   
+#### 3. Using regularization
+
+<img src="../images/training_logs/regularization_accuracy.png" alt="Regularization used" width="500"/>
+
 Baseline model - train (red), validation (blue)   
 Model from this training - train (pink), validation (green)   
 From the results, we can see, that using regularization had almost no effect on accuracy in comparison to our baseline model.   
 
-4. *Set max_seq_len to 500*
-![Max sequence lenght](../images/training_logs/max_sequence_len_accuracy.png)   
+#### 4. Setting max_seq_len to 500
+
+<img src="../images/training_logs/max_sequence_len_accuracy.png" alt="Max sequence length 500" width="500"/>
+
 Baseline model - train (red), validation (blue)   
 Model from this training - train (grey), validation (orange)   
 Next, we decided to significantly reduce the number of max_seq_len (500 instead of 2500). The results are comparable to our baseline model results, but the training is significantly faster. We can conclude that reducing length of sequences to 500 is nice trade-off of results and speed.   
 
 In the next 2 trainings, we decided to change the number of max_words parameter, to see the results.  
 
-5. *Setting number of max_words to 10000*
-![Max words 10k](../images/training_logs/max_words_10k_accuracy.png)   
+#### 5. Setting number of max_words to 10000
+
+<img src="../images/training_logs/max_words_10k_accuracy.png" alt="Max words 10k" width="500"/>
+
 Baseline model - train (red), validation (blue)    
 Model from this training - train (orange), validation (dark blue)   
 From the results, we can see that the model will learn correctly even with fewer words, which may be useful in terms of memory.   
 
-6. *Setting max words to 100000*
-![Max words 100k](../images/training_logs/max_words_100k_accuracy.png)   
+#### 6. Setting max words to 100000
+
+<img src="../images/training_logs/max_words_100k_accuracy.png" alt="Max words 100k" width="500"/>
+
 Baseline model - train (red), validation (blue)   
 Model from this training - train (pink), validation (green)   
 As we can see, a larger number of words has almost no effect on the training of the model, and therefore a smaller number of words is quite sufficient, which we can even confirm from the previous training.  
 
 In next trainings, we looked at model hyperparameters (number of hidden layers and LSTM units used).
 
-7. *Setting number of hidden layers to 0*
-![Without hidden layers](../images/training_logs/no_dense_accuracy.png)   
+#### 7. Setting number of hidden layers to 0
+
+<img src="../images/training_logs/no_dense_accuracy.png" alt="Without hidden layers" width="500"/>
+
 Baseline model - train (orange), validation (dark blue)   
 Model from this training - train (red), validation (blue)   
 From training curve we can conclude, that dense layer is not needed at all. The fact that only simple bidirectional LSTM layer is enough for fake news detection can assume too simple problem or problem with the way data were labeled (see **Conclusion** section for more information).
 
-8. *Setting number of LSTM units to 16*
-![16 LSTM units](../images/training_logs/lstm_units_16_accuracy.png)   
+#### 8. Setting number of LSTM units to 16
+
+<img src="../images/training_logs/lstm_units_16_accuracy.png" alt="16 LSTM units" width="500"/>
+
 Baseline model - train (orange), validation (dark blue)   
 Model from this training - train (pink), validation (green)   
 Same as training without dense layer, even only 16 LSTM units are sufficient for our problem and data.
 
-9. *Setting number of LSTM units to 128*
-![128 LSTM units](../images/training_logs/lstm_units_128_accuracy.png)   
+#### 9. Setting number of LSTM units to 128
+
+<img src="../images/training_logs/lstm_units_128_accuracy.png" alt="128 LSTM units" width="500"/>
+
 Baseline model - train (red), validation (blue)   
 Model from this training - train (green), validation (grey)   
 Increasing number of LSTM units to 128 turned out to be too much and we can see that after sixth epoch, model started to overfit.
 
-10. *Setting number of LSTM units to 16 and not using Dense layer*  
-![16 LSTM units without dense](../images/training_logs/lstm_16_no_dense_accuracy.png)   
+
+#### 10. Setting number of LSTM units to 16 and not using Dense layer
+
+<img src="../images/training_logs/lstm_16_no_dense_accuracy.png" alt="16 LSTM units without dense]" width="500"/>
+
 Baseline model - train (orange), validation (dark blue)      
 Model from this training - train (red), validation (blue)   
 Even in this case, model is still performing well. Check chapter **Conclusion**, where problem with data or problem simplicity is explained.
@@ -175,4 +196,3 @@ Because our results were quite good from the beginning, we decided to take a clo
 Working on this project for a couple of weeks, we also found some future works that can be done to improve fake news detection:   
 * **using multimodal features** - our first proposal included also multimodal features (like images of articles or discussions), but they were not used because of time,       
 * **evaluate model on different datasets** - according to annotation problems mentioned in conclusion, it would be appropriate to evaluate proposed neural network model on different   data.
-
