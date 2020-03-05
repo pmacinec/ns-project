@@ -8,7 +8,7 @@
 To run this project, please make sure you have Docker installed and follow the steps (also make sure to have [nvidia docker](https://github.com/NVIDIA/nvidia-docker) installed if you want to train on your Nvidia graphics card):
 1. Clone this repository with command:
     ```shell script
-    git clone git@github.com:pmacinec/ns-project.git
+    git clone git@github.com:pmacinec/neural-networks-fake-news-detection.git
     ```
 1. Download pre-trained [fastText embeddings](https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M.vec.zip) and put the `.vec` file into `models/fasttext` folder.
 1. Get into directory with command `cd ns-project/`.
